@@ -169,16 +169,6 @@
          return $axure.utils.Matrix2D(1, 0, 0, 1, 0, 0);
      };
 
-     $axure.utils.fixPng = function(png) {
-         if(!(/MSIE ((5\.5)|6)/.test(navigator.userAgent) && navigator.platform == "Win32")) return;
-
-         var src = png.src;
-         if(!png.style.width) { png.style.width = $(png).width(); }
-         if(!png.style.height) { png.style.height = $(png).height(); }
-         png.onload = function() { };
-         png.src = $axure.utils.getTransparentGifPath();
-         png.runtimeStyle.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + src + "',sizingMethod='scale')";
-     };
  })();
 
  // TODO: [mas] simplify this

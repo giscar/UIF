@@ -47,18 +47,6 @@
         $ax.event.addEvent(document, movedownName, _dragWidget, true);
         $ax.event.addEvent(document, $ax.features.eventNames.mouseUpName, _stopDragWidget, true);
 
-//        if(IE && BROWSER_VERSION < 9) {
-//            if($ax.features.supports.windowsMobile) {
-//                window.document.attachEvent($ax.features.eventNames.mouseDownName, _dragWidget);
-//                window.document.attachEvent($ax.features.eventNames.mouseUpName, _stopDragWidget);
-//            } else {
-//                window.document.attachEvent('on' + $ax.features.eventNames.mouseMoveName, _dragWidget);
-//                window.document.attachEvent('on' + $ax.features.eventNames.mouseUpName, _stopDragWidget);
-//            }
-//        } else {
-//            window.document.addEventListener($ax.features.eventNames.mouseMoveName, _dragWidget, true);
-//            window.document.addEventListener($ax.features.eventNames.mouseUpName, _stopDragWidget, true);
-//        }
         $ax.legacy.SuppressBubble(event);
     };
 
@@ -139,23 +127,6 @@
         $ax.event.removeEvent(document, $ax.features.eventNames.mouseUpName, _stopDragWidget, true);
 
         tg = IE_10_AND_BELOW ? window.event.srcElement : event.target;
-//
-//
-//        if(OLD_IE && BROWSER_VERSION < 9) {
-//            if($ax.features.supports.windowsMobile) {
-//                window.document.detachEvent($ax.features.eventNames.mouseDownName, _dragWidget);
-//                window.document.detachEvent($ax.features.eventNames.mouseUpName, _stopDragWidget);
-//
-//            } else {
-//                window.document.detachEvent('on' + $ax.features.eventNames.mouseMoveName, _dragWidget);
-//                window.document.detachEvent('on' + $ax.features.eventNames.mouseUpName, _stopDragWidget);
-//            }
-//            tg = window.event.srcElement;
-//        } else {
-//            window.document.removeEventListener($ax.features.eventNames.mouseMoveName, _dragWidget, true);
-//            window.document.removeEventListener($ax.features.eventNames.mouseUpName, _stopDragWidget, true);
-//            tg = event.target;
-//        }
 
         if(widgetDragInfo.hasStarted) {
             widgetDragInfo.currentTime = (new Date()).getTime();
@@ -193,15 +164,6 @@
                     $ax.event.addEvent(document, "mousemove", _removeSuppressEvents, true);
 
                 }
-//
-//
-//                if(IE && BROWSER_VERSION < 9 && widgetDragInfo.targetWidget) {
-//                    widgetDragInfo.targetWidget.attachEvent("onclick", _suppressClickAfterDrag);
-//                    widgetDragInfo.targetWidget.attachEvent("onmousemove", _removeSuppressEvents);
-//                } else {
-//                    window.document.addEventListener("click", _suppressClickAfterDrag, true);
-//                    window.document.addEventListener("mousemove", _removeSuppressEvents, true);
-//                }
             }
         }
 
@@ -236,37 +198,6 @@
         return 600000;
     };
 
-    //    $ax.drag.GetCursorRectangles = function() {
-    //        var rects = new Object();
-    //        rects.lastRect = new rect($ax.lastMouseLocation.x, $ax.lastMouseLocation.y, 1, 1);
-    //        rects.currentRect = new rect($ax.mouseLocation.x, $ax.mouseLocation.y, 1, 1);
-    //        return rects;
-    //    };
-
-    //    $ax.drag.GetWidgetRectangles = function(id) {
-    //        var widget = window.document.getElementById(id);
-    //        var rects = new Object();
-    //        rects.lastRect = new rect($ax.legacy.getAbsoluteLeft(widget), $ax.legacy.getAbsoluteTop(widget), Number($('#' + id).css('width').replace("px", "")), Number($('#' + id).css('height').replace("px", "")));
-    //        rects.currentRect = rects.lastRect;
-    //        return rects;
-    //    };
-
-    //    $ax.drag.IsEntering = function(movingRects, targetRects) {
-    //        return !movingRects.lastRect.IntersectsWith(targetRects.currentRect) && movingRects.currentRect.IntersectsWith(targetRects.currentRect);
-    //    };
-
-    //    $ax.drag.IsLeaving = function(movingRects, targetRects) {
-    //        return movingRects.lastRect.IntersectsWith(targetRects.currentRect) && !movingRects.currentRect.IntersectsWith(targetRects.currentRect);
-    //    };
-
-    //    function IsOver(movingRects, targetRects) {
-    //        return movingRects.currentRect.IntersectsWith(targetRects.currentRect);
-    //    }
-
-    //    function IsNotOver(movingRects, targetRects) {
-    //        return !IsOver(movingRects, targetRects);
-    //    }
-
     $ax.drag.LogMovedWidgetForDrag = function (id, dragInfo) {
         dragInfo = dragInfo || widgetDragInfo;
         if(dragInfo.hasStarted) {
@@ -277,8 +208,11 @@
             if(!$obj(id)) return;
 
             var query = $ax('#' + id);
-            var x = query.left();
-            var y = query.top();
+            //var x = query.left();
+            //var y = query.top();
+            var viewportLocation = query.viewportLocation();
+            var x =  viewportLocation.left;
+            var y = viewportLocation.top;
 
             var movedWidgets = dragInfo.movedWidgets;
             if(!movedWidgets[id]) {
